@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Simple Time Tracker",
+  "version": "1.0",
+  "description": "Logs time spent on websites locally for productivity tracking.",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Check Time Logs"
+  }
+}
