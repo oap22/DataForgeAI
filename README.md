@@ -92,10 +92,11 @@ DataForge is built with scalability, security, and user experience at its core.
 
 | Component | Technology |
 |-----------|------------|
-| **Database** | PostgreSQL (hosted on Google Cloud) |
+| **Database** | PostgreSQL (hosted on Google Cloud SQL) |
 | **AI Model** | Fine-tuned LLM (hosted on Google Cloud) |
 | **Browser Extension** | Chrome Extension (Manifest V3) |
-| **Desktop App** | *TBD* |
+| **Web Dashboard** | TypeScript, React (coming soon) |
+| **Backend API** | Node.js with TypeScript |
 | **Cloud Platform** | Google Cloud Platform |
 
 ---
