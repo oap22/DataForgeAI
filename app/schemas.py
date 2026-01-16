@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-
+from typing import Any
 
 class URLData(BaseModel):
-    domain: str
-    duration: int
+    urls: dict[str, Any]

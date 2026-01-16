@@ -30,6 +30,30 @@ async function logTime() {
   }
 }
 
+async function sendDataToServer() {
+  const allData = chrome.local.storage.get(null);
+
+  try {
+    //change address after finished local testing
+    const response = await fetch('http://127.0.0.1:8000/process_url', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(allData)
+        });
+    //check metadata for server response (200-299 should be ok, anything else is crash)
+    if (!response.ok){
+      throw new Error('Server error: ${response.status}')
+    }
+    //body of response is still arriving, so do await
+    const result = await response.json();
+    console.log("Success:", result);
+  } catch (error) {
+        console.error("Error sending data:", error);
+    }
+}
+
 // Update tracker when the active tab changes
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   await logTime(); // Log the previous tab
@@ -64,3 +88,4 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
     }
   }
 });
+
