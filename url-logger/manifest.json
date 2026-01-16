@@ -5,7 +5,8 @@
   "description": "Logs time spent on websites locally for productivity tracking.",
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "alarms"
   ],
   "background": {
     "service_worker": "background.js"

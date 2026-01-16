@@ -31,9 +31,15 @@ async function logTime() {
 }
 
 async function sendDataToServer() {
-  const allData = chrome.local.storage.get(null);
+  if (!navigator.onLine) {
+      console.log("Offline: Skipping sync until next hour.");
+      return;
+  }
+  
+  const allData = await chrome.storage.local.get(null);
 
   try {
+    
     //change address after finished local testing
     const response = await fetch('http://127.0.0.1:8000/process_url', {
             method: 'POST',
@@ -44,7 +50,9 @@ async function sendDataToServer() {
         });
     //check metadata for server response (200-299 should be ok, anything else is crash)
     if (!response.ok){
-      throw new Error('Server error: ${response.status}')
+      //clear storage because we don't want to send duplicate data
+      await chrome.storage.local.clear();
+      throw new Error(`Server error: ${response.status}`)
     }
     //body of response is still arriving, so do await
     const result = await response.json();
@@ -86,6 +94,18 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
       currentUrl = tabs[0].url;
       startTime = Date.now();
     }
+  }
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.alarms.create('hourlyDataSync', {
+    periodInMinutes: 60 
+  });
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'hourlyDataSync') {
+    sendDataToServer();
   }
 });
 
